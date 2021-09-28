@@ -1,31 +1,3 @@
-const onClick = () => {
-  document.getElementById(
-    "washer1"
-  ).innerHTML = `<div>Washer 1 Being Used</div>`;
-
-  setInterval(function () {
-    console.log("CLicked");
-    if (document.getElementById("washer1Time").innerText > 0) {
-      document.getElementById("washer1Time").innerText--;
-    }
-  }, 3000);
-};
-
-// document.getElementById("Container").innerHTML = `
-// <div  id="washer1"><button onclick=onClick()>Wash 1</button></div>
-// <div  id="washer1Time">38</div>
-
-// <button id="washer2">Wash 2</button>
-// <div id="washer2Time">38</div>
-
-// `
-{
-  /* <button id="Dryer1">Dry 1</button>
-<div id="Dryer1Time">60</div>
-<button id="Dryer2">Dry 2</button>
-<div id="Dryer2Time"
->60</div>; */
-}
 const getDryers = () => {
   let container = document.getElementById("dryerContainer");
 
@@ -40,18 +12,68 @@ const getDryers = () => {
     });
 };
 
-const startDryer = (id) => {
+const endDryer = (id) => {
+  // debugger;
+  dryerAvailable(id);
   document.getElementById(
-    `${id}btn`
+    `dryer${id}btn`
   ).innerHTML = `<div>Dryer ${id} is in Use</div>`;
 
-  if (document.getElementById(`Dryer${id}Time`).innerText > 0) {
-    setInterval(function () {
-      console.log("CLicked");
+  document.getElementById(`dryer${id}btn`).innerHTML = `
+    <div id="dryer${id}btn"><button onclick=startDryer(${id}) >Dryer ${id}</button></div>
 
-      document.getElementById(`Dryer${id}Time`).innerText--;
-    }, 3000);
-  }
+    `;
+  document.getElementById(
+    `Dryer${id}Time`
+  ).innerHTML = `    <div id="Dryer${id}Time">60</div>`;
+};
+
+let myDryer;
+
+const startDryer = (id, time) => {
+  document.getElementById(
+    `dryer${id}btn`
+  ).innerHTML = `<div>Dryer ${id} is in Use</div>`;
+  dryerInUse(id);
+  let myDryer = setInterval(function () {
+    document.getElementById(`Dryer${id}Time`).innerText--;
+
+    if (document.getElementById(`Dryer${id}Time`).innerText == 0) {
+      clearInterval(myDryer);
+      endDryer(id, time);
+      dryerAvailable(id);
+    }
+  }, 300);
+};
+
+const dryerAvailable = (id) => {
+  const dryer = {
+    status: "Available",
+  };
+
+  fetch(`http://localhost:3000/dryers/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(dryer),
+  });
+};
+
+const dryerInUse = (id) => {
+  const dryer = {
+    status: "In Use",
+  };
+
+  fetch(`http://localhost:3000/dryers/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(dryer),
+  });
 };
 
 getDryers();
@@ -65,7 +87,7 @@ class Dryer {
 
   renderDryer() {
     return `
-    <div id="${this.id}btn"><button onclick=startDryer(${this.id}) >Dryer ${this.id}</button></div>
+    <div id="dryer${this.id}btn"><button onclick=startDryer(${this.id},${this.time}) >Dryer ${this.id}</button></div>
     <div id="Dryer${this.id}Time">${this.time}</div>
     `;
   }
