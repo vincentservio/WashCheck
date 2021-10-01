@@ -1,7 +1,7 @@
 const getDryers = () => {
   let container = document.getElementById("dryerContainer");
 
-  fetch("http://localhost:3000/dryers")
+  fetch("https://wish-washer.herokuapp.com/dryers")
     .then((resp) => resp.json())
     .then((dryers) => {
       // debugger;
@@ -12,6 +12,35 @@ const getDryers = () => {
     });
 };
 
+const dryerAvailable = (id) => {
+  const dryer = {
+    status: "Available",
+  };
+
+  fetch(`https://wish-washer.herokuapp.com/dryers/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(dryer),
+  });
+};
+
+const dryerInUse = (id) => {
+  const dryer = {
+    status: "In Use",
+  };
+
+  fetch(`https://wish-washer.herokuapp.com/dryers/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(dryer),
+  });
+};
 const endDryer = (id) => {
   // debugger;
   dryerAvailable(id);
@@ -44,36 +73,6 @@ const startDryer = (id, time) => {
       dryerAvailable(id);
     }
   }, 300);
-};
-
-const dryerAvailable = (id) => {
-  const dryer = {
-    status: "Available",
-  };
-
-  fetch(`http://localhost:3000/dryers/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(dryer),
-  });
-};
-
-const dryerInUse = (id) => {
-  const dryer = {
-    status: "In Use",
-  };
-
-  fetch(`http://localhost:3000/dryers/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(dryer),
-  });
 };
 
 getDryers();

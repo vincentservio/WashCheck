@@ -1,7 +1,7 @@
 const getWashers = () => {
   let container = document.getElementById("washerContainer");
 
-  fetch("http://localhost:3000/washers")
+  fetch("https://wish-washer.herokuapp.com/washers")
     .then((resp) => resp.json())
     .then((washers) => {
       // debugger;
@@ -17,7 +17,7 @@ const washerAvailable = (id) => {
     status: "Available",
   };
 
-  fetch(`http://localhost:3000/washers/${id}`, {
+  fetch(`https://wish-washer.herokuapp.com/washers/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +32,7 @@ const washerInUse = (id) => {
     status: "In Use",
   };
 
-  fetch(`http://localhost:3000/washers/${id}`, {
+  fetch(`https://wish-washer.herokuapp.com/washers/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -46,12 +46,12 @@ const endWasher = (id, time) => {
   // debugger;
   washerAvailable(id);
   document.getElementById(`washer${id}btn`).innerHTML = `
-    <div id="washer${id}btn"><button onclick=startWasher(${this.id},${this.time}) >Washer ${id}</button></div>
+    <div id="washer${id}btn"><button onclick=startWasher(${id}) >Washer ${id}</button></div>
 
     `;
   document.getElementById(
     `Washer${id}Time`
-  ).innerHTML = `    <div id="Washer${id}Time">${time}</div>`;
+  ).innerHTML = `    <div id="Washer${id}Time">38</div>`;
 };
 let myWash;
 
@@ -66,7 +66,7 @@ const startWasher = (id, time) => {
     if (document.getElementById(`Washer${id}Time`).innerText == 0) {
       clearInterval(myWash);
       endWasher(id, time);
-      washererAvailable(id);
+      washerAvailable(id);
     }
   }, 300);
 };
