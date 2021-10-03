@@ -1,0 +1,122 @@
+.button {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+$totalEle: 10;
+$duration: 10s;
+$speed: $duration / ($totalEle / 2);
+$delay: $speed / 2;
+$default-bg-color: black;
+$complete-on: $duration + $delay + 0.5s;
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $default-bg-color;
+  animation: ani_complete 0.25s #{$complete-on} linear forwards;
+}
+
+@mixin cd_mixin() {
+  @for $i from 1 through ($totalEle + 1) {
+    &:nth-of-type(#{$i}) {
+      color: adjust-hue(#ff0000, $i * 50%);
+
+      @if ($i < ($totalEle + 1)) {
+        animation: ani_1 $speed ($i * $delay) ease-in-out forwards;
+      } @else {
+        animation: ani_2 $speed ($i * $delay) ease-in-out forwards;
+      }
+
+      &:before {
+        content: "#{ $totalEle + 1 - $i}";
+      }
+    }
+  }
+}
+
+@keyframes ani_1 {
+  0% {
+    transform: translateY(20%);
+    opacity: 0;
+  }
+
+  33.33%,
+  66.66% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+}
+
+@keyframes ani_2 {
+  0% {
+    transform: translateY(20%);
+    opacity: 0;
+  }
+
+  33.33%,
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes ani_complete {
+  0% {
+    background-color: $default-bg-color;
+  }
+  100% {
+    background-color: #fff;
+  }
+}
+
+.animation-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    color: #fff;
+    z-index: 1;
+
+    margin-left: -25rem;
+    margin-top: -15rem;
+
+    width: 50rem;
+    height: 30rem;
+    overflow: hidden;
+    text-align: center;
+    opacity: 0;
+
+    @include cd_mixin();
+
+    &:before {
+      font-size: 25rem;
+      font-family: arial, verdana;
+      line-height: 30rem;
+      display: block;
+      text-align: center;
+    }
+  }
+}
