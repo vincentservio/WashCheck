@@ -87,7 +87,7 @@ class Dryer {
   renderDryer() {
     return `
     <div id="dryer${this.id}btn"><button onclick=startDryer(${this.id},${this.time}) >Dryer ${this.id}</button></div>
-    <div id="Dryer${this.id}Time">${this.time}</div>
+  <div class="numero_counting_wrapper">  <div class="numero_shape" id="Dryer${this.id}Time">${this.time}</div></div>
     `;
   }
 }
