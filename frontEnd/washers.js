@@ -1,7 +1,8 @@
+let WASHURL = "https://wish-washer.herokuapp.com/washers/";
 const getWashers = () => {
   let container = document.getElementById("washerContainer");
 
-  fetch("https://wish-washer.herokuapp.com/washers")
+  fetch(WASHURL)
     .then((resp) => resp.json())
     .then((washers) => {
       // debugger;
@@ -17,7 +18,7 @@ const washerAvailable = (id) => {
     status: "Available",
   };
 
-  fetch(`https://wish-washer.herokuapp.com/washers/${id}`, {
+  fetch(WASHURL + `${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +33,7 @@ const washerInUse = (id) => {
     status: "In Use",
   };
 
-  fetch(`https://wish-washer.herokuapp.com/washers/${id}`, {
+  fetch(WASHURL + `${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

@@ -1,7 +1,8 @@
+let URL = "https://wish-washer.herokuapp.com/dryers/";
 const getDryers = () => {
   let container = document.getElementById("dryerContainer");
 
-  fetch("https://wish-washer.herokuapp.com/dryers")
+  fetch(URL)
     .then((resp) => resp.json())
     .then((dryers) => {
       // debugger;
@@ -17,7 +18,7 @@ const dryerAvailable = (id) => {
     status: "Available",
   };
 
-  fetch(`https://wish-washer.herokuapp.com/dryers/${id}`, {
+  fetch(URL + `${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +33,7 @@ const dryerInUse = (id) => {
     status: "In Use",
   };
 
-  fetch(`https://wish-washer.herokuapp.com/dryers/${id}`, {
+  fetch(URL + `/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -87,7 +88,7 @@ class Dryer {
   renderDryer() {
     return `
     <div id="dryer${this.id}btn"><button onclick=startDryer(${this.id},${this.time}) >Dryer ${this.id}</button></div>
-  <div class="numero_counting_wrapper">  <div class="numero_shape" id="Dryer${this.id}Time">${this.time}</div></div>
+    <div class="numero_counting_wrapper">  <div class="numero_shape" id="Dryer${this.id}Time">${this.time}</div></div>
     `;
   }
 }
